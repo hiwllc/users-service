@@ -1,10 +1,16 @@
 package dev.iamwallace.user.business;
 
 import dev.iamwallace.user.business.converter.UserConverter;
+import dev.iamwallace.user.business.dto.AddressDTO;
+import dev.iamwallace.user.business.dto.PhoneDTO;
 import dev.iamwallace.user.business.dto.UserDTO;
+import dev.iamwallace.user.infrastructure.entity.Address;
+import dev.iamwallace.user.infrastructure.entity.Phone;
 import dev.iamwallace.user.infrastructure.entity.User;
 import dev.iamwallace.user.infrastructure.exceptions.ConflictExcepetion;
 import dev.iamwallace.user.infrastructure.exceptions.ResourceNotFoundException;
+import dev.iamwallace.user.infrastructure.repository.AddressRepository;
+import dev.iamwallace.user.infrastructure.repository.PhoneRepository;
 import dev.iamwallace.user.infrastructure.repository.UserRepository;
 import dev.iamwallace.user.infrastructure.security.JwtUtil;
 import lombok.RequiredArgsConstructor;
@@ -19,6 +25,8 @@ public class UserService {
   private final UserConverter userConverter;
   private final PasswordEncoder passwordEncoder;
   private final JwtUtil jwtUtil;
+  private final AddressRepository addressRepository;
+  private final PhoneRepository phoneRepository;
 
   public UserDTO create(UserDTO userDTO) {
     validateUserExistenceBeforeCreating(userDTO.getEmail());
@@ -56,5 +64,19 @@ public class UserService {
 
   public void deleteUserByEmail(String email) {
     userRepository.deleteByEmail(email);
+  }
+
+  public AddressDTO updateAddress(Long id, AddressDTO addressDTO) {
+    Address entity = addressRepository.findById(id).orElseThrow(() -> new ResourceNotFoundException("Address don't exists"));
+    Address address = userConverter.updateAddress(addressDTO, entity);
+
+    return userConverter.toAddressDTO(addressRepository.save(address));
+  }
+
+  public PhoneDTO updatePhone(Long id, PhoneDTO phoneDTO) {
+    Phone entity = phoneRepository.findById(id).orElseThrow(() -> new ResourceNotFoundException("Phone don't exists"));
+    Phone phone = userConverter.updatePhone(phoneDTO, entity);
+
+    return userConverter.toPhoneDTO(phoneRepository.save(phone));
   }
 }

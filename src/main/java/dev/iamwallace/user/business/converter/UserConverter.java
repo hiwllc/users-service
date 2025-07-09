@@ -32,6 +32,7 @@ public class UserConverter {
       .number(addressDTO.getNumber())
       .city(addressDTO.getCity())
       .state(addressDTO.getState())
+      .zipcode(addressDTO.getZipcode())
       .build();
   }
 
@@ -62,10 +63,12 @@ public class UserConverter {
 
   public AddressDTO toAddressDTO(Address address) {
     return AddressDTO.builder()
+      .id(address.getId())
       .address(address.getAddress())
       .number(address.getNumber())
       .city(address.getCity())
       .state(address.getState())
+      .zipcode(address.getZipcode())
       .build();
   }
 
@@ -75,6 +78,7 @@ public class UserConverter {
 
   public PhoneDTO toPhoneDTO(Phone phone) {
     return PhoneDTO.builder()
+      .id(phone.getId())
       .code(phone.getCode())
       .number(phone.getNumber())
       .build();
@@ -88,6 +92,25 @@ public class UserConverter {
       .email(userDTO.getEmail() != null ? userDTO.getEmail() : user.getEmail())
       .addresses(user.getAddresses())
       .phones(user.getPhones())
+      .build();
+  }
+
+  public Address updateAddress(AddressDTO addressDTO, Address address) {
+    return Address.builder()
+      .id(address.getId())
+      .address(addressDTO.getAddress() != null ? addressDTO.getAddress() : address.getAddress())
+      .number(addressDTO.getNumber() != null ? addressDTO.getNumber() : address.getNumber())
+      .city(addressDTO.getCity() != null ? addressDTO.getCity() : address.getCity())
+      .state(addressDTO.getState() != null ? addressDTO.getState() : address.getState())
+      .zipcode(addressDTO.getZipcode() != null ? addressDTO.getZipcode() : address.getZipcode())
+      .build();
+  }
+
+  public Phone updatePhone(PhoneDTO phoneDTO, Phone phone) {
+    return Phone.builder()
+      .id(phone.getId())
+      .code(phoneDTO.getCode() != null ? phoneDTO.getCode() : phone.getCode())
+      .number(phoneDTO.getNumber() != null ? phoneDTO.getNumber() : phone.getNumber())
       .build();
   }
 }
