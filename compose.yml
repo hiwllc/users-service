@@ -1,0 +1,15 @@
+services:
+  database:
+    image: postgres
+    # You can rename your container name here
+    container_name: spring-tasks
+    restart: always
+    shm_size: 128mb
+    ports:
+      - 5432:5432
+    environment:
+      POSTGRES_DB: spring
+      POSTGRES_USER: spring
+      POSTGRES_PASSWORD: spring
+    volumes:
+      - ./.database:/var/lib/postgresql/data
