@@ -113,4 +113,23 @@ public class UserConverter {
       .number(phoneDTO.getNumber() != null ? phoneDTO.getNumber() : phone.getNumber())
       .build();
   }
+
+  public Address toAddressEntity(AddressDTO addressDTO, Long userId) {
+    return Address.builder()
+      .address(addressDTO.getAddress())
+      .city(addressDTO.getCity())
+      .state(addressDTO.getState())
+      .number(addressDTO.getNumber())
+      .zipcode(addressDTO.getZipcode())
+      .user_id(userId)
+      .build();
+  }
+
+  public Phone toPhoneEntity(PhoneDTO phoneDTO, Long userId) {
+    return Phone.builder()
+      .code(phoneDTO.getCode())
+      .number(phoneDTO.getNumber())
+      .user_id(userId)
+      .build();
+  }
 }

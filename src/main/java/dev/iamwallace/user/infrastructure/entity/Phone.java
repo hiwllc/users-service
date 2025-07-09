@@ -20,4 +20,7 @@ public class Phone {
 
   @Column(name = "code", length = 3)
   private String code;
+
+  @Column(name = "user_id")
+  private Long user_id;
 }

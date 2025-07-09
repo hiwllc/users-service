@@ -29,4 +29,7 @@ public class Address {
 
   @Column(name = "zipcode", length = 10)
   private String zipcode;
+
+  @Column(name = "user_id")
+  private Long user_id;
 }
