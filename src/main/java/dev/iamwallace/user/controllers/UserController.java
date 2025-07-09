@@ -4,6 +4,7 @@ import dev.iamwallace.user.business.UserService;
 import dev.iamwallace.user.business.dto.AddressDTO;
 import dev.iamwallace.user.business.dto.PhoneDTO;
 import dev.iamwallace.user.business.dto.UserDTO;
+import dev.iamwallace.user.infrastructure.entity.Address;
 import dev.iamwallace.user.infrastructure.entity.Phone;
 import dev.iamwallace.user.infrastructure.security.JwtUtil;
 import lombok.RequiredArgsConstructor;
@@ -59,5 +60,15 @@ public class UserController {
   @PutMapping("/phone")
   public ResponseEntity<PhoneDTO> updatePhone(@RequestBody PhoneDTO phoneDTO, @RequestParam("id") Long id) {
     return ResponseEntity.ok(userService.updatePhone(id, phoneDTO));
+  }
+
+  @PostMapping("/address")
+  public ResponseEntity<AddressDTO> updateAddress(@RequestBody AddressDTO addressDTO, @RequestHeader("Authorization") String token) {
+    return ResponseEntity.ok(userService.createAddress(token, addressDTO));
+  }
+
+  @PostMapping("/phone")
+  public ResponseEntity<PhoneDTO> updateAddress(@RequestBody PhoneDTO phoneDTO, @RequestHeader("Authorization") String token) {
+    return ResponseEntity.ok(userService.createPhone(token, phoneDTO));
   }
 }
