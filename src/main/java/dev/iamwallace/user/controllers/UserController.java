@@ -42,4 +42,9 @@ public class UserController {
     userService.deleteUserByEmail(email);
     return ResponseEntity.noContent().build();
   }
+
+  @PutMapping
+  public ResponseEntity<UserDTO> update(@RequestBody UserDTO userDTO, @RequestHeader("Authorization") String token) {
+    return ResponseEntity.ok(userService.update(token, userDTO));
+  }
 }
