@@ -4,6 +4,7 @@ import dev.iamwallace.user.business.converter.UserConverter;
 import dev.iamwallace.user.business.dto.UserDTO;
 import dev.iamwallace.user.infrastructure.entity.User;
 import dev.iamwallace.user.infrastructure.exceptions.ConflictExcepetion;
+import dev.iamwallace.user.infrastructure.exceptions.ResourceNotFoundException;
 import dev.iamwallace.user.infrastructure.repository.UserRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
@@ -34,5 +35,14 @@ public class UserService {
 
   public boolean existsByEmail(String email) {
     return userRepository.existsByEmail(email);
+  }
+
+  public UserDTO getUserByEmail(String email) {
+    User user = userRepository.findByEmail(email).orElseThrow(() -> new ResourceNotFoundException("User don't exists"));
+    return userConverter.toUserDTO(user);
+  }
+
+  public void deleteUserByEmail(String email) {
+    userRepository.deleteByEmail(email);
   }
 }
