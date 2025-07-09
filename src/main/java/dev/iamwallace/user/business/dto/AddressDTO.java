@@ -10,6 +10,7 @@ import java.util.List;
 @NoArgsConstructor
 @Builder
 public class AddressDTO {
+  private Long id;
   private String address;
   private String city;
   private String number;
