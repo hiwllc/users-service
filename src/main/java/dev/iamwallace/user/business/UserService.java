@@ -6,6 +6,7 @@ import dev.iamwallace.user.infrastructure.entity.User;
 import dev.iamwallace.user.infrastructure.exceptions.ConflictExcepetion;
 import dev.iamwallace.user.infrastructure.exceptions.ResourceNotFoundException;
 import dev.iamwallace.user.infrastructure.repository.UserRepository;
+import dev.iamwallace.user.infrastructure.security.JwtUtil;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
@@ -17,6 +18,7 @@ public class UserService {
   private final UserRepository userRepository;
   private final UserConverter userConverter;
   private final PasswordEncoder passwordEncoder;
+  private final JwtUtil jwtUtil;
 
   public UserDTO create(UserDTO userDTO) {
     validateUserExistenceBeforeCreating(userDTO.getEmail());
@@ -40,6 +42,16 @@ public class UserService {
   public UserDTO getUserByEmail(String email) {
     User user = userRepository.findByEmail(email).orElseThrow(() -> new ResourceNotFoundException("User don't exists"));
     return userConverter.toUserDTO(user);
+  }
+
+  public UserDTO update(String token, UserDTO userDTO) {
+    String email = jwtUtil.extractUsername(token.substring(7));
+
+    userDTO.setPassword(userDTO.getPassword() != null ? passwordEncoder.encode(userDTO.getPassword()) : null);
+    User userEntity = userRepository.findByEmail(email).orElseThrow(() -> new ResourceNotFoundException("User don't exists"));
+    User user = userConverter.updateUser(userDTO, userEntity);
+
+    return userConverter.toUserDTO(userRepository.save(user));
   }
 
   public void deleteUserByEmail(String email) {
