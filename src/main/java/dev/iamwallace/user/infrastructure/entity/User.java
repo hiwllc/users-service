@@ -1,10 +1,7 @@
 package dev.iamwallace.user.infrastructure.entity;
 
 import jakarta.persistence.*;
-import lombok.AllArgsConstructor;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
-import lombok.Setter;
+import lombok.*;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 
@@ -19,6 +16,7 @@ import java.util.List;
 // This comes from JPA (I guess)
 @Entity
 @Table(name = "users")
+@Builder
 public class User implements UserDetails {
 
   @Id

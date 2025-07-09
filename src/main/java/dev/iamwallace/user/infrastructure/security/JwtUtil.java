@@ -4,6 +4,8 @@ import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.Jwts;
 import io.jsonwebtoken.SignatureAlgorithm;
 import io.jsonwebtoken.security.Keys;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.core.env.Environment;
 import org.springframework.stereotype.Service;
 
 import java.nio.charset.StandardCharsets;
@@ -11,9 +13,13 @@ import java.util.Date;
 
 @Service
 public class JwtUtil {
-  private final String secretKey = "9b6f8e1aef0948e6af50a6f98217a2bcd48f994e81209a7cc1f1428bfc7c3a2a";
+  @Autowired
+  private Environment env; //secretKey;
 
   public String generateToken(String username) {
+    // The secret key was added to intellij in configurations, we can move to env file later.
+    String secretKey = env.getProperty("SECRET_KEY");
+
     return Jwts.builder()
       .setSubject(username)
       .setIssuedAt(new Date())
@@ -23,6 +29,8 @@ public class JwtUtil {
   }
 
   public Claims extractClaims(String token) {
+    String secretKey = env.getProperty("SECRET_KEY");
+
     return Jwts.parser()
       .setSigningKey((Keys.hmacShaKeyFor(secretKey.getBytes(StandardCharsets.UTF_8))))
       .build()
