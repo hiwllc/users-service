@@ -13,7 +13,7 @@ import java.util.List;
 public class UserDTO {
   private String name;
   private String email;
-  @JsonProperty(access = JsonProperty.Access.WRITE_ONLY)
+  //  @JsonProperty(access = JsonProperty.Access.WRITE_ONLY)
   private String password;
   private List<AddressDTO> addresses;
   private List<PhoneDTO> phones;
